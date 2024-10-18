@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku Test</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="app.js"></script>
+</head>
+<body>
+<div ng-controller="SudokuController">
+    <table border="1">
+        <tr ng-repeat="(rowIndex, row) in matrix track by $index">
+            <td ng-repeat="(cellIndex, cell) in row track by $index" style="width: 2em; height: 2em; text-align: center; font-size: larger;">
+                <span ng-if="cell !== 0">{{ cell }}</span>
+
+                <span ng-if="cell === 0 && !editMode[rowIndex + '.' + cellIndex]"
+                      ng-click="editMode[rowIndex + '.' + cellIndex] = true">
+                &nbsp;
+            </span>
+
+                <input ng-if="editMode[rowIndex + '.' + cellIndex]"
+                       type="text"
+                       name="{{ rowIndex + '.' + cellIndex }}"
+                       ng-model="matrix[rowIndex][cellIndex]"
+                       ng-change="sendValue(rowIndex, cellIndex, matrix[rowIndex][cellIndex])"
+                       ng-blur="editMode[rowIndex + '.' + cellIndex] = false"
+                       style="width: 100%; text-align: center;">
+
+            </td>
+        </tr>
+    </table>
+    <div ng-if="errorMessage" style="color: red;">{{ errorMessage }}</div>
+</div>
+</body>
+</html>
